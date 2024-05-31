@@ -105,14 +105,16 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Timeline />
         <main className="space-y-20 py-20 sm:space-y-32 sm:py-32 text-foreground bg-background mx-auto max-w-7xl px-6 lg:flex lg:px-8 min-h-screen">
           <div className="flex flex-col justify-center">
-            <h1 className="text-4xl/tight lg:ml-96 lg:pl-96 sm:px-16 lg:text-center mb-4">
+            <h1 className="text-4xl/tight lg:ml-96 lg:pl-32  xl:pl-96 sm:px-16 lg:text-center mb-4">
               Claim <span className="text-primary">$MAD</span>
             </h1>
-            <div className="sm:px-16 lg:ml-96 lg:pl-96 mb-4">
+            <div className="sm:px-16 lg:ml-96 lg:pl-32 xl:pl-96 mb-4">
               <Stepper />
             </div>
 
-            <div className="lg:ml-96 lg:pl-96 sm:px-12">{children}</div>
+            <div className="lg:ml-96 lg:pl-32 xl:pl-96 sm:px-12">
+              {children}
+            </div>
           </div>
         </main>
       </div>
