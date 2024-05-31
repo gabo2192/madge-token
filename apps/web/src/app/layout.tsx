@@ -1,9 +1,20 @@
-import "./globals.css";
+import Web3ModalProvider from "@/context/web3-provider";
 import "@repo/ui/styles.css";
+import clsx from "clsx";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import localFont from "next/font/local";
+import "./globals.css";
+import Providers from "./providers";
 
 const inter = Inter({ subsets: ["latin"] });
+
+const monaSans = localFont({
+  src: "../fonts/Mona-Sans.var.woff2",
+  display: "swap",
+  variable: "--font-mona-sans",
+  weight: "200 900",
+});
 
 export const metadata: Metadata = {
   title: "Create Turborepo",
@@ -16,8 +27,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }): JSX.Element {
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
+    <html
+      className={clsx("h-full antialiased", inter.className, monaSans.variable)}
+      lang="en"
+      suppressHydrationWarning
+    >
+      <body className="flex min-h-full flex-col bg-background">
+        <Web3ModalProvider>
+          <Providers>{children}</Providers>
+        </Web3ModalProvider>
+      </body>
     </html>
   );
 }
