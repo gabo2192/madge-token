@@ -5,11 +5,11 @@ import Web3Auth from "@components/web3-auth";
 export default function Page(): JSX.Element {
   return (
     <Layout>
-      <p className="mt-4 text-lg/6 text-primary font-koulen text-center">
-        We're createing a meme ecosystem on{" "}
+      <p className="mt-4 text-6xl text-white font-koulen text-center">
+        We're creating a meme <br /> ecosystem on{" "}
         <span className="text-[#FF9100]">Rootstock</span>.
       </p>
-      <p className="text-center text-lg/6 text-white font-koulen mt-4">
+      <p className="text-center text-4xl text-white font-koulen mt-12">
         Connect your Wallet to check
         <br /> your <span className="text-primary">$MAD</span> airdrop status
       </p>

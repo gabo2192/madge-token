@@ -14,6 +14,7 @@ const config: Omit<Config, "content"> = {
     },
     extend: {
       colors: {
+        black: "#010006",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

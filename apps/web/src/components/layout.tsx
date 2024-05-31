@@ -1,6 +1,4 @@
-import Image from "next/image";
 import Link from "next/link";
-import image from "../../public/symbiosis-finance.png";
 import { Logo } from "./logo";
 import { XLogo } from "./twitter-logo";
 import Web3Auth from "./web3-auth";
@@ -56,7 +54,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
             </a>
             .
           </p>
-          <a
+          {/* <a
             href="https://app.symbiosis.finance/swap"
             target="_blank"
             className="p-3 bg-black rounded-full mt-4"
@@ -68,17 +66,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
               height={300}
               className="size-24 rounded-full"
             />
-          </a>
-          <a
-            href="https://x.com/madgeymooo"
-            target="_blank"
-            className="  mt-40 text-center flex flex-col items-center"
-          >
-            <span className="block text-lg mb-4 ">Contact</span>
-            <span className="size-8">
-              <XLogo />
-            </span>
-          </a>
+          </a> */}
         </main>
       </div>
     </>

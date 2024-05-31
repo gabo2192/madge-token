@@ -4,10 +4,10 @@ import Web3Auth from "@components/web3-auth";
 export default async function CheckEligibility() {
   return (
     <Layout>
-      <p className="text-lg mt-12 mb-4 text-primary text-center">
+      <p className="text-6xl mt-12 mb-4 text-white text-center">
         😿 You’re not eligible. 😿
       </p>
-      <p className="text-lg mb-4 text-primary text-center">
+      <p className="text-4xl mb-4 text-white text-center">
         If you think we’ve got that wrong, <br />
         contact us on{" "}
         <a
