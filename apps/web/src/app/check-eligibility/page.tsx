@@ -32,8 +32,7 @@ export default async function CheckEligibility() {
     .from("whitelist")
     .select("*")
     .eq("address", user.address);
-  console.log({ user });
-  console.log({ whitelistData });
+
   if (error) {
     return redirect("/error");
   }

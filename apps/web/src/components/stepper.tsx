@@ -7,7 +7,7 @@ import { usePathname } from "next/navigation";
 export default function Stepper() {
   const pathname = usePathname();
   const singInPath = () => {
-    if (pathname === "/") {
+    if (pathname === "/sign-in") {
       return "current";
     }
     if (pathname === "/") {
