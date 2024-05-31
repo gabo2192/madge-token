@@ -42,26 +42,22 @@ export default function Stepper() {
 
   const steps = [
     {
-      name: "Connect your wallet",
-      description: "We need to connect your wallet to get started.",
+      name: "Connect wallet to sign-in",
       href: "/",
       status: pathname === "/" ? "current" : "complete",
     },
     {
-      name: "Sign in",
-      description: "You have to verify a message to sign in.",
+      name: "You’ll be asked to verify a message to confirm",
       href: "/sign-in",
       status: singInPath(),
     },
     {
       name: "Check eligibility",
-      description: "You can check if you are eligible for the airdrop.",
       href: "/check-eligibility",
       status: checkEligibilityPath(),
     },
     {
-      name: "Claim $MAD",
-      description: "You can claim your $MAD tokens here.",
+      name: "Claim your $MAD - Network fees apply ",
       href: "/check-eligibility",
       status: checkClaimPath(),
     },
@@ -82,7 +78,7 @@ export default function Stepper() {
               <>
                 {stepIdx !== steps.length - 1 ? (
                   <div
-                    className="absolute left-4 top-4 -ml-px mt-0.5 h-full w-0.5 bg-primary"
+                    className="absolute left-4 top-4 -ml-px mt-0.5 h-full w-0.5 bg-[#ff9100]"
                     aria-hidden="true"
                   />
                 ) : null}
@@ -91,17 +87,16 @@ export default function Stepper() {
                   className="group relative flex items-start"
                 >
                   <span className="flex h-9 items-center">
-                    <span className="relative z-10 flex h-8 w-8 items-center justify-center rounded-full bg-primary group-hover:bg-primary-foreground">
+                    <span className="relative z-10 flex h-8 w-8 items-center justify-center rounded-full bg-[#ff9100] group-hover:bg-[#ff9100]-foreground">
                       <CheckIcon
                         className="h-5 w-5 text-foreground"
                         aria-hidden="true"
                       />
                     </span>
                   </span>
-                  <span className="ml-4 flex min-w-0 flex-col">
-                    <span className="text-sm font-medium">{step.name}</span>
-                    <span className="text-sm text-gray-500">
-                      {step.description}
+                  <span className="ml-4 flex min-w-0 flex-col h-9 justify-center">
+                    <span className="uppercase text-black block">
+                      {step.name}
                     </span>
                   </span>
                 </Link>
@@ -110,7 +105,7 @@ export default function Stepper() {
               <>
                 {stepIdx !== steps.length - 1 ? (
                   <div
-                    className="absolute left-4 top-4 -ml-px mt-0.5 h-full w-0.5 bg-muted"
+                    className="absolute left-4 top-4 -ml-px mt-0.5 h-full w-0.5 bg-black"
                     aria-hidden="true"
                   />
                 ) : null}
@@ -120,16 +115,13 @@ export default function Stepper() {
                   aria-current="step"
                 >
                   <span className="flex h-9 items-center" aria-hidden="true">
-                    <span className="relative z-10 flex h-8 w-8 items-center justify-center rounded-full border-2 border-primary bg-foreground">
-                      <span className="h-2.5 w-2.5 rounded-full bg-primary" />
+                    <span className="relative z-10 flex h-8 w-8 items-center justify-center rounded-full border-2 border-[#ff9100] bg-foreground">
+                      <span className="h-2.5 w-2.5 rounded-full bg-[#ff9100]" />
                     </span>
                   </span>
-                  <span className="ml-4 flex min-w-0 flex-col">
-                    <span className="text-sm font-medium text-primary">
+                  <span className="ml-4 flex min-w-0 flex-col h-9 justify-center">
+                    <span className="uppercase text-black block">
                       {step.name}
-                    </span>
-                    <span className="text-sm text-gray-500">
-                      {step.description}
                     </span>
                   </span>
                 </Link>
@@ -138,7 +130,7 @@ export default function Stepper() {
               <>
                 {stepIdx !== steps.length - 1 ? (
                   <div
-                    className="absolute left-4 top-4 -ml-px mt-0.5 h-full w-0.5 bg-muted"
+                    className="absolute left-4 top-4 -ml-px mt-0.5 h-full w-0.5 bg-black"
                     aria-hidden="true"
                   />
                 ) : null}
@@ -152,10 +144,7 @@ export default function Stepper() {
                     </span>
                   </span>
                   <span className="ml-4 flex min-w-0 flex-col">
-                    <span className="text-sm font-medium">{step.name}</span>
-                    <span className="text-sm text-gray-500">
-                      {step.description}
-                    </span>
+                    <span className="uppercase">{step.name}</span>
                   </span>
                 </div>
               </>
@@ -163,7 +152,7 @@ export default function Stepper() {
               <>
                 {stepIdx !== steps.length - 1 ? (
                   <div
-                    className="absolute left-4 top-4 -ml-px mt-0.5 h-full w-0.5 bg-muted"
+                    className="absolute left-4 top-4 -ml-px mt-0.5 h-full w-0.5 bg-black"
                     aria-hidden="true"
                   />
                 ) : null}
@@ -172,16 +161,13 @@ export default function Stepper() {
                   className="group relative flex items-start"
                 >
                   <span className="flex h-9 items-center" aria-hidden="true">
-                    <span className="relative z-10 flex h-8 w-8 items-center justify-center rounded-full border-2 border-muted bg-foreground group-hover:border-gray-400">
-                      <span className="h-2.5 w-2.5 rounded-full bg-transparent group-hover:bg-muted" />
+                    <span className="relative z-10 flex h-8 w-8 items-center justify-center rounded-full border-2 border-black bg-foreground group-hover:border-gray-400">
+                      <span className="h-2.5 w-2.5 rounded-full bg-transparent group-hover:bg-black" />
                     </span>
                   </span>
-                  <span className="ml-4 flex min-w-0 flex-col">
-                    <span className="text-sm font-medium text-gray-500">
+                  <span className="ml-4 flex min-w-0 flex-col h-9 justify-center">
+                    <span className="uppercase text-black block">
                       {step.name}
-                    </span>
-                    <span className="text-sm text-gray-500">
-                      {step.description}
                     </span>
                   </span>
                 </Link>

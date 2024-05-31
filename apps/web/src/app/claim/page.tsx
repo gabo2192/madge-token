@@ -41,9 +41,13 @@ export default async function CheckEligibility() {
   }
   return (
     <Layout>
-      <h2 className="text-3xl mt-12 mb-4">
-        You are eligible for this airdrop!
-      </h2>
+      <p className="text-lg mt-12 mb-4 text-primary text-center">
+        🎉 Congratulations! 🎉
+      </p>
+      <p className="text-lg mb-4 text-primary text-center">
+        You are eligible for the <br />
+        1st wave of the $MAD airdrop!
+      </p>
       <ButtonLink href="/success" size="lg">
         Claim Airdrop
       </ButtonLink>

@@ -4,6 +4,7 @@ import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { getCsrfToken } from "next-auth/react";
 import { supabase } from "./supabase";
+
 export const secret = process.env.NEXTAUTH_SECRET!;
 
 export const authOptions = {
@@ -23,7 +24,7 @@ export const authOptions = {
       async authorize(credentials, req) {
         try {
           const csrfToken = await getCsrfToken({ req: { ...req, body: null } });
-
+          console.log({ credentials });
           if (!csrfToken || !credentials?.message || !credentials?.signature)
             return null;
           const walletAddress = ethers.verifyMessage(

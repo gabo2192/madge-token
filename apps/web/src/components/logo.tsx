@@ -10,8 +10,8 @@ export function Logo({ className }: Props) {
     <Image
       src={logo}
       alt="Madge Token"
-      width={200}
-      height={200}
+      width={400}
+      height={400}
       className={className}
     />
   );

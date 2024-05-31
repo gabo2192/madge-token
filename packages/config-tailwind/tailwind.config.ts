@@ -55,6 +55,9 @@ const config: Omit<Config, "content"> = {
       },
       fontFamily: {
         sans: ["var(--font-sans)", ...fontFamily.sans],
+        koulen: ["var(--font-koulen)", ...fontFamily.sans],
+        inter: ["var(--font-inter)", ...fontFamily.sans],
+        mono: ["var(--font-mona-sans)", ...fontFamily.mono],
       },
       keyframes: {
         "accordion-down": {

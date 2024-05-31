@@ -1,7 +1,3 @@
-import Link from "next/link";
-
-import { Logo } from "@components/logo";
-
 function BookIcon(props: React.ComponentPropsWithoutRef<"svg">) {
   return (
     <svg viewBox="0 0 16 16" aria-hidden="true" fill="currentColor" {...props}>
@@ -39,60 +35,11 @@ function XIcon(props: React.ComponentPropsWithoutRef<"svg">) {
 }
 
 export function Intro() {
-  return (
-    <>
-      <div>
-        <Link
-          href="/"
-          className="bg-white text-black p-2 flex items-center w-max gap-2 rounded-xl text-2xl"
-        >
-          <Logo className="inline-block size-20 w-auto rounded-full" /> Madge
-        </Link>
-      </div>
-      <h1 className="mt-14 font-display text-4xl/tight font-light text-white">
-        Hello world!
-      </h1>
-      <p className="mt-4 text-xl/6 text-gray-300">
-        Introducing{" "}
-        <a
-          href="https://x.com/madgeymooo"
-          target="__blank"
-          className="text-primary"
-        >
-          $MAD
-        </a>
-        , the very first memecoin on{" "}
-        <a
-          href="https://x.com/rootstock_io"
-          target="__blank"
-          className="text-primary"
-        >
-          @rootstock_io!
-        </a>
-      </p>
-      {/* <SignUpForm /> */}
-      {/* <div className="mt-8 flex flex-wrap justify-center gap-x-1 gap-y-3 sm:gap-x-2 lg:justify-start">
-        <IconLink href="#" icon={BookIcon} className="flex-none">
-          Documentation
-        </IconLink>
-        <IconLink href="#" icon={GitHubIcon} className="flex-none">
-          GitHub
-        </IconLink>
-        <IconLink href="/feed.xml" icon={FeedIcon} className="flex-none">
-          RSS
-        </IconLink>
-      </div> */}
-    </>
-  );
+  return <></>;
 }
 
 export function IntroFooter() {
   return (
-    <p className="flex items-baseline gap-x-2 text-[0.8125rem]/6 text-gray-500">
-      Brought to you by{" "}
-      {/* <IconLink href="#" icon={XIcon} compact>
-        Joe Davola
-      </IconLink> */}
-    </p>
+    <p className="flex items-baseline gap-x-2 text-[0.8125rem]/6 text-gray-500"></p>
   );
 }
