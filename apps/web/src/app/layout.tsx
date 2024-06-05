@@ -1,10 +1,13 @@
-import Web3ModalProvider from "@/context/web3-provider";
+import "@rainbow-me/rainbowkit/styles.css";
 import "@repo/ui/styles.css";
 import clsx from "clsx";
 import type { Metadata } from "next";
 import { Inter, Koulen } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
+
+import { SessionProvider } from "@/context/session-provider";
+import { UserProvider } from "@/context/user-provider";
 import Providers from "./providers";
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
@@ -44,9 +47,11 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="flex min-h-full flex-col bg-primary">
-        <Web3ModalProvider>
-          <Providers>{children}</Providers>
-        </Web3ModalProvider>
+        <SessionProvider>
+          <Providers>
+            <UserProvider>{children}</UserProvider>
+          </Providers>
+        </SessionProvider>
       </body>
     </html>
   );

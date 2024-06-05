@@ -1,12 +1,16 @@
-import { defaultWagmiConfig } from "@web3modal/wagmi/react/config";
-
-import { cookieStorage, createStorage } from "wagmi";
+import { getDefaultConfig } from "@rainbow-me/rainbowkit";
 import { rootstockTestnet } from "wagmi/chains";
 
 // Get projectId at https://cloud.walletconnect.com
 export const projectId = process.env.NEXT_PUBLIC_PROJECT_ID;
 
 if (!projectId) throw new Error("Project ID is not defined");
+
+declare module "wagmi" {
+  interface Register {
+    config: typeof config;
+  }
+}
 
 const metadata = {
   name: "Web3Modal",
@@ -16,13 +20,9 @@ const metadata = {
 };
 
 // Create wagmiConfig
-const chains = [rootstockTestnet] as const;
-export const config = defaultWagmiConfig({
-  chains,
-  projectId,
-  metadata,
-  ssr: true,
-  storage: createStorage({
-    storage: cookieStorage,
-  }),
+export const config = getDefaultConfig({
+  appName: "My RainbowKit App",
+  projectId: "YOUR_PROJECT_ID",
+  chains: [rootstockTestnet],
+  ssr: true, // If your dApp uses server side rendering (SSR)
 });

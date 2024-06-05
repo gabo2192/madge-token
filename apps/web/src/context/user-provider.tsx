@@ -1,11 +1,11 @@
 "use client";
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect } from "react";
 
-import axios from "axios";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
+import { useAccount } from "wagmi";
 
 interface UserContext {
-  user: any | null;
+  user: null;
 }
 
 // Create a new context
@@ -15,26 +15,22 @@ const UserContext = createContext<UserContext>({
 
 // Create a provider component
 const UserProvider = ({ children }: { children: React.ReactNode }) => {
-  const [user, setUser] = useState<any | null>(null);
-  const { data: session } = useSession();
+  const { address } = useAccount();
+  const { status } = useSession();
 
   useEffect(() => {
-    const getUser = async () => {
-      try {
-        const { data: user } = await axios.get<any>("/api/user/me");
-
-        setUser(user);
-      } catch (err) {
-        setUser(null);
-      }
-    };
-    if (session?.user) {
-      getUser();
+    if (!address && status === "authenticated") {
+      signOut({
+        callbackUrl: "/",
+      });
     }
-  }, [session]);
+  }, [address]);
+
   // Provide the context value to the children components
   return (
-    <UserContext.Provider value={{ user }}>{children}</UserContext.Provider>
+    <UserContext.Provider value={{ user: null }}>
+      {children}
+    </UserContext.Provider>
   );
 };
 
