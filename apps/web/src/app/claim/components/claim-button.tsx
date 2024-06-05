@@ -60,7 +60,7 @@ export function ClaimButton() {
         onClick={handleClaim}
         disabled={loading || isPending || isConfirming}
       >
-        {loading || isPending ? "Claiming..." : "Claim"}
+        {loading || isPending || isConfirming ? "Claiming..." : "Claim"}
       </Button>
       {error && <p className="text-danger">{error.message}</p>}
       {transactionError && (
