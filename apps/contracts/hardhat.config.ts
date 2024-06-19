@@ -1,5 +1,6 @@
 import "@nomicfoundation/hardhat-ethers";
 import "@nomicfoundation/hardhat-toolbox";
+import "@openzeppelin/hardhat-upgrades";
 
 import { HardhatUserConfig, vars } from "hardhat/config";
 
