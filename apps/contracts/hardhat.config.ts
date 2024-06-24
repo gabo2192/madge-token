@@ -1,8 +1,10 @@
 import "@nomicfoundation/hardhat-ethers";
 import "@nomicfoundation/hardhat-toolbox";
 
-import { HardhatUserConfig } from "hardhat/config";
+import { HardhatUserConfig, vars } from "hardhat/config";
 
+const TESTNET_WALLET = vars.get("TESTNET_WALLET");
+const MAINNET_WALLET = vars.get("MAINNET_WALLET");
 const config: HardhatUserConfig = {
   solidity: {
     version: "0.8.20",
@@ -18,9 +20,11 @@ const config: HardhatUserConfig = {
   networks: {
     rskTestnet: {
       url: "https://public-node.testnet.rsk.co",
-      accounts: [
-        "0e25339cfa6f8c696a9c0889d9d0bf70b2e702654f776d24da6548a8351c0a27",
-      ],
+      accounts: [TESTNET_WALLET],
+    },
+    rsk: {
+      url: "https://public-node.rsk.co",
+      accounts: [MAINNET_WALLET],
     },
   },
 };

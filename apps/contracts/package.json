@@ -7,7 +7,8 @@
     "test": "hardhat test",
     "compile": "hardhat compile",
     "deploy:local": "hardhat run scripts/deploy.ts --network localhost",
-    "deploy:rsktestnet": "hardhat run scripts/deploy.ts --network rskTestnet"
+    "deploy:rsktestnet": "hardhat run scripts/deploy.ts --network rskTestnet",
+    "deploy:rsk": "hardhat run scripts/deploy.ts --network rsk"
   },
   "author": "",
   "license": "MIT",
