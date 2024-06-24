@@ -1,5 +1,4 @@
 import "@rainbow-me/rainbowkit/styles.css";
-import "@repo/ui/styles.css";
 import clsx from "clsx";
 import type { Metadata } from "next";
 import { Inter, Koulen } from "next/font/google";
