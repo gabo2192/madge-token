@@ -25,7 +25,8 @@ const monaSans = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Madge Coin",
+  title:
+    "Madge Coin | We're building a Memecoin Ecosystem on Bitcoin | RootStock",
   description: "The 1st memecoin on Rootstock",
 };
 
