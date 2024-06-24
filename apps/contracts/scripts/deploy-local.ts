@@ -1,8 +1,9 @@
-import { ethers, upgrades } from "hardhat";
+import { ethers } from "hardhat";
 
 async function main() {
   // Deploy MadgeCoin
   const [owner] = await ethers.getSigners();
+  console.log(owner);
   const MadgeCoinFactory = await ethers.getContractFactory("MadgeCoin");
   const madgeCoin = await MadgeCoinFactory.deploy();
   await madgeCoin.waitForDeployment();
@@ -17,11 +18,7 @@ async function main() {
 
   // Approve transfer of tokens
   const madgeClaimTokenAddress = await madgeClaimToken.getAddress();
-  console.log(madgeClaimTokenAddress);
-  console.log(tokens.toString());
   const totalSupply = await madgeCoin.totalSupply();
-  console.log({ totalSupply });
-  console.log({ tokens: BigInt(tokens) });
   await madgeCoin.approve(madgeClaimTokenAddress, tokens);
 
   const madgeAddress = await madgeCoin.getAddress();
@@ -31,12 +28,8 @@ async function main() {
 
   const MadgeCasinoFactory = await ethers.getContractFactory("MadgeCasino");
   console.log("Deploying MadgeCasino...");
-  const madgeCasino = await upgrades.deployProxy(
-    MadgeCasinoFactory,
-    [madgeAddress],
-    { initializer: "initialize" }
-  );
-  await madgeCasino.waitForDeployment();
+  const madgeCasino = await MadgeCasinoFactory.deploy();
+
   console.log("MadgeCasino deployed to:", madgeCasino.address);
 
   const madgeCasinoAddress = await madgeCasino.getAddress();
