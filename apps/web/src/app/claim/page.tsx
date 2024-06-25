@@ -1,6 +1,9 @@
 import { authOptions } from "@/lib/auth";
 import { supabase } from "@/lib/supabase";
-import { generateProof } from "@/utils/generate-merkle-tree";
+import {
+  generateMerkleTreeRoot2,
+  generateProof,
+} from "@/utils/generate-merkle-tree";
 import { Layout } from "@components/layout";
 import { getServerSession } from "next-auth";
 import { signOut } from "next-auth/react";
@@ -9,6 +12,7 @@ import { ClaimButton } from "./components/claim-button";
 
 export default async function CheckEligibility() {
   const session = await getServerSession(authOptions);
+  generateMerkleTreeRoot2();
   if (!session) {
     return redirect("/");
   }
