@@ -1,6 +1,6 @@
 import { authOptions } from "@/lib/auth";
 import { supabase } from "@/lib/supabase";
-import { generateMerkleTreeProof } from "@/utils/generate-merkle-tree";
+import { generateProof } from "@/utils/generate-merkle-tree";
 import { Layout } from "@components/layout";
 import { getServerSession } from "next-auth";
 import { signOut } from "next-auth/react";
@@ -17,7 +17,7 @@ export default async function CheckEligibility() {
     return redirect("/");
   }
   try {
-    const proof = generateMerkleTreeProof(session?.user?.pubkey);
+    const proof = generateProof(session?.user?.pubkey);
     if (!proof) {
       return redirect("/not-eligible");
     }

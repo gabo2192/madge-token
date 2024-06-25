@@ -2,26 +2,19 @@
 
 import { Button } from "@components/button";
 import clsx from "clsx";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import {
-  useAccount,
-  useWaitForTransactionReceipt,
-  useWriteContract,
-} from "wagmi";
 
 export function ClaimButton() {
-  const { address } = useAccount();
-  const [loading, setLoading] = useState(false);
-  const { data: hash, writeContract, isPending, error } = useWriteContract();
-  const router = useRouter();
-  const {
-    isLoading: isConfirming,
-    isSuccess: isConfirmed,
-    error: transactionError,
-  } = useWaitForTransactionReceipt({
-    hash,
-  });
+  // const { address } = useAccount();
+  // const [loading, setLoading] = useState(false);
+  // const { data: hash, writeContract, isPending, error } = useWriteContract();
+  // const router = useRouter();
+  // const {
+  //   isLoading: isConfirming,
+  //   isSuccess: isConfirmed,
+  //   error: transactionError,
+  // } = useWaitForTransactionReceipt({
+  //   hash,
+  // });
 
   // const handleClaim = async () => {
   //   if (!address) return;
@@ -42,11 +35,11 @@ export function ClaimButton() {
   //   }
   // };
 
-  useEffect(() => {
-    if (isConfirmed) {
-      router.push("/success");
-    }
-  }, [isConfirmed]);
+  // useEffect(() => {
+  //   if (isConfirmed) {
+  //     router.push("/success");
+  //   }
+  // }, [isConfirmed]);
 
   return (
     <>
@@ -57,12 +50,13 @@ export function ClaimButton() {
         disabled={true}
         // disabled={loading || isPending || isConfirming}
       >
-        {loading || isPending || isConfirming ? "Claiming..." : "Coming Soon"}
+        {/* {loading || isPending || isConfirming ? "Claiming..." : "Coming Soon"} */}
+        Comming Soon
       </Button>
-      {error && <p className="text-danger">{error.message}</p>}
+      {/* {error && <p className="text-danger">{error.message}</p>}
       {transactionError && (
         <p className="text-danger">{transactionError.message}</p>
-      )}
+      )} */}
     </>
   );
 }
