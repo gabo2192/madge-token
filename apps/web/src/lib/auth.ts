@@ -68,7 +68,7 @@ export const authOptions = {
       session.publicKey = token.sub;
       if (session.user) {
         session.user.pubkey = token.sub;
-        session.user.image = `https://ui-avatars.com/api/?name=${token.sub}&background=random`;
+        session.user.image = `https://cat-avatars.vercel.app/api/cat?name=${token.sub}`;
       }
       return session;
     },

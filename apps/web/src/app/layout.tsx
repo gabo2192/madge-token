@@ -1,27 +1,20 @@
+import { SessionProvider } from "@/components/providers/session-provider";
+import { UserProvider } from "@/components/providers/user-provider";
+import Web3Provider from "@/components/providers/web3-providers";
+import { Toaster } from "@/components/ui/toaster";
 import "@rainbow-me/rainbowkit/styles.css";
 import clsx from "clsx";
 import type { Metadata } from "next";
-import { Inter, Koulen } from "next/font/google";
-import localFont from "next/font/local";
+import { Koulen, Roboto_Mono } from "next/font/google";
 import "./globals.css";
 
-import { SessionProvider } from "@/context/session-provider";
-import { UserProvider } from "@/context/user-provider";
-import Providers from "./providers";
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+const roboto = Roboto_Mono({ subsets: ["latin"], variable: "--font-roboto" });
 
 const koulen = Koulen({
   subsets: ["latin"],
   display: "swap",
   weight: ["400"],
   variable: "--font-koulen",
-});
-
-const monaSans = localFont({
-  src: "../fonts/Mona-Sans.var.woff2",
-  display: "swap",
-  variable: "--font-mona-sans",
-  weight: "200 900",
 });
 
 export const metadata: Metadata = {
@@ -36,21 +29,17 @@ export default function RootLayout({
 }): JSX.Element {
   return (
     <html
-      className={clsx(
-        "h-full antialiased",
-        inter.variable,
-        koulen.variable,
-        monaSans.className
-      )}
+      className={clsx("h-full antialiased", roboto.variable, koulen.variable)}
       lang="en"
       suppressHydrationWarning
     >
-      <body className="flex min-h-full flex-col bg-primary">
+      <body className="bg-background text-foreground dark">
         <SessionProvider>
-          <Providers>
+          <Web3Provider>
             <UserProvider>{children}</UserProvider>
-          </Providers>
+          </Web3Provider>
         </SessionProvider>
+        <Toaster />
       </body>
     </html>
   );

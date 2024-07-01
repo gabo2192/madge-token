@@ -37,3 +37,6 @@ dist/
 .env
 
 typechain-types
+
+old-components
+old-app

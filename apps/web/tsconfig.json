@@ -3,7 +3,6 @@
   "compilerOptions": {
     "plugins": [{ "name": "next" }],
     "paths": {
-      "@components/*": ["./src/components/*"],
       "@/*": ["./src/*"]
     }
   },
@@ -12,7 +11,8 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "src/utils/merkleTree.ts"
+    "src/utils/merkleTree.ts",
+    "src/app/(casino)/casino/(games)/coin-flipper"
   ],
   "exclude": ["node_modules"]
 }

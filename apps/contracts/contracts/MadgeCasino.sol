@@ -6,74 +6,98 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "hardhat/console.sol";
 
 contract MadgeCasino is Ownable {
-    IERC20 public depositToken = IERC20(0x5FbDB2315678afecb367f032d93F642f64180aa3);
-    uint256 public treasuryBalance;
+    struct Treasury {
+        address owner;
+        IERC20 depositToken;
+        uint256 balance;
+    }
+
+    mapping(address => mapping(address => Treasury)) public treasuries;
+
+    uint256 public constant PAYOUT_MULTIPLIER = 96; // Represents 0.96 as a percentage
+    uint256 public constant HOUSE_EDGE = 4; // Represents 4% fee
+
+    event TreasuryCreated(
+        uint32 indexed requestId, 
+        address indexed owner, 
+        address indexed token
+    );
+
     event CoinFlipResult(
-        uint256 indexed requestId,
+        uint32 indexed requestId,
         address indexed user, 
+        address indexed treasuryToken,
         uint256 betAmount, 
         bool won, 
         uint256 payout, 
         uint8 choice, 
         uint8 result
     );
-    uint256 public constant PAYOUT_MULTIPLIER = 96; // Represents 0.96 as a percentage
-    uint256 public constant HOUSE_EDGE = 4; // Represents 4% fee
-
+   
     constructor() Ownable(msg.sender) {}
 
-    function fundTreasury(uint256 _amount) external onlyOwner {
+    function createTreasury(uint32 requestId, IERC20 _depositToken) external {
+        
+        if (treasuries[msg.sender][address(_depositToken)].depositToken != IERC20(address(0))){
+            revert("Treasury for this token already exists");
+        }
+        console.log("here");
+        treasuries[msg.sender][address(_depositToken)] = Treasury(msg.sender, _depositToken, 0);
+        emit TreasuryCreated(requestId, msg.sender, address(_depositToken));
+    }
+
+    function fundTreasury(address _token, uint256 _amount) external {
+        Treasury storage treasury = treasuries[msg.sender][_token];
         require(_amount > 0, "Funding amount must be greater than zero.");
         require(
-            depositToken.transferFrom(msg.sender,address(this), _amount),
+            treasury.depositToken.transferFrom(msg.sender, address(this), _amount),
             "Token transfer failed"
         );
-        treasuryBalance += _amount;
+        treasury.balance += _amount;
     }
     
-    function withdrawTreasury(uint256 _amount) external onlyOwner {
+    function withdrawTreasury(address _token, uint256 _amount) external  {
+        Treasury storage treasury = treasuries[msg.sender][_token];
         require(_amount > 0, "Withdrawal amount must be greater than zero");
-        require(treasuryBalance >= _amount, "Insufficient funds in the treasury");
-
-        treasuryBalance -= _amount;
+        require(treasury.balance >= _amount, "Insufficient funds in the treasury");
+        treasury.balance -= _amount;
         require(
-            depositToken.transfer(msg.sender, _amount),
+            treasury.depositToken.transfer(msg.sender, _amount),
             "Token transfer failed"
         );
     }
 
-    function flipCoin(uint256 requestId, uint256 _betAmount, uint8 _choice, uint8 _randomResult) external {
+    function flipCoin(uint32 requestId, address _treasuryToken, address _userTreasury, uint256 _betAmount, uint8 _choice, uint8 _randomResult) external {
         require(_betAmount > 0, "Bet amount must be greater than zero");
         require(_choice == 0 || _choice == 1, "Choice must be 0 (heads) or 1 (tails)");
         require(_randomResult == 0 || _randomResult == 1, "Random result must be 0 or 1");
 
-        // Transfer the bet amount from the user to the contract
+        Treasury storage treasury = treasuries[_userTreasury][_treasuryToken];
+        require(treasury.owner == _userTreasury, "Invalid treasury owner");
+        require(treasury.depositToken == IERC20(_treasuryToken), "Invalid treasury token"); 
+
+        // Transfer the bet amount
         require(
-            depositToken.transferFrom(msg.sender, address(this), _betAmount),
+            treasury.depositToken.transferFrom(msg.sender, address(this), _betAmount),
             "Token transfer failed"
         );
-      
+
         uint256 payout = 0;
         bool won = false;
         if (_choice == _randomResult) {
-            // User won
-            payout = _betAmount + ((_betAmount * PAYOUT_MULTIPLIER) / 100); // Calculate payout as 0.96 times the bet amount
-            require(treasuryBalance >= payout, "Insufficient funds in the treasury");
-
-            treasuryBalance -= payout;
-
-            // Transfer the payout to the user
+            payout = _betAmount + ((_betAmount * PAYOUT_MULTIPLIER) / 100);
+            require(treasury.balance >= payout, "Insufficient funds in the treasury");
+            treasury.balance -= payout;
             require(
-                depositToken.transfer(msg.sender, payout),
+                treasury.depositToken.transfer(msg.sender, payout),
                 "Token transfer failed"
             );
             won = true;
         } else {
-            // User lost, treasury balance is already incremented by the bet amount
-            treasuryBalance += _betAmount;
+            treasury.balance += _betAmount; 
         }
-
-        emit CoinFlipResult(requestId, msg.sender, _betAmount, won, payout, _choice, _randomResult);
+        emit CoinFlipResult(requestId, msg.sender, _treasuryToken, _betAmount, won, payout, _choice, _randomResult);
     }
+    
 
 }

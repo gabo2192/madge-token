@@ -30,8 +30,6 @@ async function main() {
   console.log("Deploying MadgeCasino...");
   const madgeCasino = await MadgeCasinoFactory.deploy();
 
-  console.log("MadgeCasino deployed to:", madgeCasino.address);
-
   const madgeCasinoAddress = await madgeCasino.getAddress();
   await madgeCoin.approve(madgeCasinoAddress, tokens);
   console.log(`MadgeCasino deployed to: ${madgeCasinoAddress}`);
