@@ -24,7 +24,8 @@ export function TreasuryItem({ treasury, pubkey }: Props) {
       </div>
       <p className="truncate">Token Address: {treasury.token_address}</p>
       <p>
-        Treasury Balance: {treasury.balance} {treasury.token_ticker}
+        Treasury Balance: {Number(treasury.balance) / 10 ** 8}{" "}
+        {treasury.token_ticker}
       </p>
       <div className="flex gap-2">
         {pubkey === treasury.owner_address && (

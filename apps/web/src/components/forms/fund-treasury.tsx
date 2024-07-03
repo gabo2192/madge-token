@@ -5,6 +5,7 @@ import config from "@/lib/contracts-config";
 import { MadgeCasino__factory, MadgeCoin__factory } from "@/typechain-types";
 import { TreasuryDB } from "@/types/treasury";
 import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useReadContract, useWriteContract } from "wagmi";
@@ -39,7 +40,6 @@ export function FundTreasuryForm({ treasury }: Props) {
       treasury.token_address as `0x${string}`,
     ],
   });
-  console.log({ data });
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
     setLoading(true);
@@ -56,6 +56,9 @@ export function FundTreasuryForm({ treasury }: Props) {
         address: config.casinoContract,
         functionName: "fundTreasury",
         args: [treasury.token_address as `0x${string}`, BigInt(value)],
+      });
+      await axios.post("/api/coin-flipper/treasury/update-balance", {
+        id: treasury.id,
       });
     } catch (error) {
       console.error(error);

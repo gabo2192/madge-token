@@ -5,7 +5,7 @@ import { Hero } from "@/components/sections/hero";
 import { Button } from "@/components/ui/button";
 import { getUser } from "@/lib/user/get-user";
 import { checkUserSession } from "@/utils/check-session";
-import { generateMerkleTreeProof } from "@/utils/generate-merkle-tree";
+import { generateProof } from "@/utils/generate-merkle-tree";
 import { redirect } from "next/navigation";
 
 export default async function Page() {
@@ -15,7 +15,7 @@ export default async function Page() {
   }
   // check eligibility
   try {
-    const proof = generateMerkleTreeProof(session.pubkey);
+    const proof = generateProof(session.pubkey);
     console.log({ proof });
     if (!proof) {
       return redirect("/not-eligible");

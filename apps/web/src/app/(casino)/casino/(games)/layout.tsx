@@ -1,4 +1,3 @@
-import { CasinoBalance } from "@/components/client/casino-balance";
 import { CasinoNav } from "@/components/client/casino-nav";
 import { MainLayout } from "@/components/layouts/main-layout";
 import { checkUserSession } from "@/utils/check-session";
@@ -23,8 +22,7 @@ export default async function Layout({ children }: Props) {
       <div className="mx-auto mb-4">
         <CasinoNav />
       </div>
-      <div className="bg-accent/90 flex-1 pt-12 px-3 rounded-t-[64px] md:flex-grow-0 md:pb-10 md:rounded-md">
-        <CasinoBalance />
+      <div className="bg-accent/90 flex-1 pt-12 px-3 md:flex-grow-0 md:pb-10 md:rounded-md">
         {children}
       </div>
     </MainLayout>

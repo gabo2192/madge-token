@@ -31,7 +31,6 @@ const UserProvider = ({ children }: { children: React.ReactNode }) => {
     functionName: "allowance",
     args: [address!, contracts.casinoContract],
   });
-  console.log({ balanceOfStatus });
 
   const updateBalance = (balance: number) => {
     setBalance(balance);

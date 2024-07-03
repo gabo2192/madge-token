@@ -41,5 +41,15 @@ contract MadgeClaimToken is Ownable {
         require(MerkleProof.verify(proof, merkleRoot, leaf), "Invalid proof");
         require(token.transferFrom(tokenOwner, msg.sender, 1000000000), "Transaction Error");
         hasClaimed[msg.sender] = true;
-    }    
+    }  
+    
+    function checkEligibility(
+        string calldata receiver, 
+        bytes32[] calldata proof
+    ) external view returns (bool) {
+        require(!hasClaimed[msg.sender], "Tokens already claimed");
+        bytes32 leaf = keccak256(abi.encodePacked(receiver));
+        require(MerkleProof.verify(proof, merkleRoot, leaf), "Invalid proof");
+        return true;
+    }
 }

@@ -5,12 +5,14 @@ import { TreasuryDB } from "@/types/treasury";
 import { checkUserSession } from "@/utils/check-session";
 
 export default async function Page() {
-  const { data } = await supabase.from("coin_flipper_treasuries").select("*");
+  const { data } = await supabase
+    .from("coin_flipper_treasuries")
+    .select("*")
+    .eq("status", "active");
   const user = await checkUserSession();
   if (!user) return <></>;
-  const treasuries = (data as TreasuryDB[]).filter(
-    (t) => t.status === "active"
-  );
+  const treasuries = data as TreasuryDB[];
+
   const myTreasuries = treasuries.filter(
     (t) => t.owner_address === user.pubkey
   );

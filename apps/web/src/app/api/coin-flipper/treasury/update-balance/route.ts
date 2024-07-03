@@ -20,13 +20,13 @@ export async function POST(request: NextRequest) {
   if (error) return NextResponse.json({ error }, { status: 500 });
 
   const treasury = data[0] as TreasuryDB;
-
-  const provider = new ethers.JsonRpcProvider("http://127.0.0.1:8545");
+  const provider = new ethers.JsonRpcProvider(config.rpcURL);
   const contract = new ethers.Contract(
     config.casinoContract,
     MadgeCasino__factory.abi,
     provider
   );
+
   const treasuryOnChain = await contract.treasuries(
     treasury.owner_address,
     treasury.token_address

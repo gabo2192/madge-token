@@ -10,7 +10,13 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useWatchContractEvent, useWriteContract } from "wagmi";
 import { z } from "zod";
-import { Form, FormField, FormItem, FormLabel } from "../ui/form";
+import {
+  Form,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+} from "../ui/form";
 
 export function AddTreasury() {
   const [loading, setLoading] = useState(false);
@@ -21,6 +27,8 @@ export function AddTreasury() {
     tokenAddress: z.string(),
     tokenName: z.string(),
     tokenTicker: z.string(),
+    slug: z.string(),
+    imageURL: z.string(),
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -29,6 +37,8 @@ export function AddTreasury() {
       tokenAddress: "",
       tokenName: "",
       tokenTicker: "",
+      slug: "",
+      imageURL: "",
     },
   });
   console.log({ requestId });
@@ -45,14 +55,14 @@ export function AddTreasury() {
         updateTreasuryStatus(userData.args.requestId);
       }
     },
-    args: {
-      owner: session?.user.pubkey as `0x${string}`,
-      requestId: requestId,
-    },
-    enabled: !!requestId,
+    enabled: true,
+    onError: (error) => console.error(error),
   });
 
-  const { writeContractAsync } = useWriteContract();
+  const { data, writeContract, error, isPending, failureReason } =
+    useWriteContract();
+
+  console.log({ data, error, isPending, failureReason });
 
   async function updateTreasuryStatus(requestId: number) {
     try {
@@ -71,19 +81,21 @@ export function AddTreasury() {
   async function onSubmit(data: z.infer<typeof formSchema>) {
     setLoading(true);
     try {
-      const { data: response } = await axios.post<number>(
+      const { data: response } = await axios.post<{ id: number }>(
         "/api/coin-flipper/treasury",
         data
       );
 
-      await writeContractAsync({
+      writeContract({
         abi: MadgeCasino__factory.abi,
         address: config.casinoContract,
         functionName: "createTreasury",
-        args: [response, data.tokenAddress as `0x${string}`],
+        args: [response.id, data.tokenAddress as `0x${string}`],
       });
     } catch (error) {
       console.error(error);
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -136,6 +148,39 @@ export function AddTreasury() {
                   type="text"
                   className="bg-background/80 "
                   placeholder="$MAD"
+                />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="slug"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel htmlFor="bet">Token Slug:</FormLabel>
+                <Input
+                  {...field}
+                  type="text"
+                  className="bg-background/80 "
+                  placeholder="madge-coin"
+                />
+                <FormDescription>
+                  No symbols allowed, lowercase only.
+                </FormDescription>
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="imageURL"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel htmlFor="bet">Image URL:</FormLabel>
+                <Input
+                  {...field}
+                  type="text"
+                  className="bg-background/80 "
+                  placeholder="https://example.com/image.png"
                 />
               </FormItem>
             )}
