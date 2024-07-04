@@ -16,7 +16,7 @@ contract MadgeClaimToken is Ownable {
     address public tokenOwner;
 
     constructor() Ownable(msg.sender) {
-        merkleRoot = 0x27a2e2ff9235118463aaee293b6fdcee12cd53174efa4c9931135c33c5690779;
+        merkleRoot = 0x3d0a127cfd993d64f38d4e2c7d9ed0cc2a2e2f59d7e09706ac5bb29a549037c7;
     }
 
     function updateMerkleRoot(

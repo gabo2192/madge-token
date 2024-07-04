@@ -1,9 +1,13 @@
 import "dotenv";
+import { config as dotEnvConfig } from "dotenv";
 import { ethers } from "hardhat";
+
+dotEnvConfig();
 async function main() {
   // Deploy MadgeCoin
   const [owner] = await ethers.getSigners();
-  const madgeAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
+  const madgeAddress = process.env.NEXT_PUBLIC_TOKEN_CONTRACT!;
+  console.log({ madgeAddress });
 
   const tokens = 4000000 * 10 ** 8;
   // Deploy MadgeAirdrop, passing in MadgeCoin address and other params

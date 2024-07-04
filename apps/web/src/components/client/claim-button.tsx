@@ -12,7 +12,6 @@ interface Props {
 }
 
 export function ClaimButton({ amount, proof }: Props) {
-  console.log({ amount, proof });
   const [loading, setLoading] = useState(false);
   const {
     data: hash,
@@ -21,7 +20,6 @@ export function ClaimButton({ amount, proof }: Props) {
     isError,
     error,
   } = useWriteContract();
-  console.log({ error });
   const {
     isLoading: isConfirming,
     isSuccess: isConfirmed,
@@ -64,12 +62,12 @@ export function ClaimButton({ amount, proof }: Props) {
       </Button>
       {isError && (
         <p className="text-red-500 max-w-64">
-          {(error?.cause as any)?.shortMessage || error.message}
+          {(error?.cause as any)?.details || error.message}
         </p>
       )}
       {transactionError && (
         <p className="text-red-500 max-w-64">
-          {(transactionError?.cause as any)?.shortMessage ||
+          {(transactionError?.cause as any)?.details ||
             transactionError.message}
         </p>
       )}

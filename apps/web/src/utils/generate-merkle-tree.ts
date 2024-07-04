@@ -3,12 +3,13 @@ import accountsTest from "@/data/account.test.json";
 import accounts1 from "@/data/accounts.json";
 import accounts2 from "@/data/accounts2.json";
 import { StandardMerkleTree } from "@openzeppelin/merkle-tree";
+import { config as dotEnvConfig } from "dotenv";
 import { getAddress } from "ethers";
 import * as fs from "fs";
+dotEnvConfig();
 
 export const generateMerkleTreeRoot = () => {
   const environment = process.env.NEXT_PUBLIC_WALLET_ENVIRONMENT;
-
   const accounts: string[] = [];
 
   if (environment === "prod") {
