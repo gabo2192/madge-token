@@ -8,7 +8,7 @@ function useLogin() {
 
   const { address } = useAccount();
 
-  const login = useCallback(async () => {
+  const login = useCallback(async (redirect?: string) => {
     try {
       const csrf = await getCsrfToken();
       if (!address || !csrf) {
@@ -21,6 +21,7 @@ function useLogin() {
         message: message,
         redirect: false,
         signature: signature,
+        callbackUrl: redirect,
       });
     } catch (error) {
       console.error(error);

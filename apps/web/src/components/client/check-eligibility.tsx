@@ -3,12 +3,11 @@ import { Button } from "@/components/ui/button";
 import useLogin from "@/hooks/useLogin";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useAccount, useSignMessage } from "wagmi";
+import { useAccount } from "wagmi";
 
 export function CheckEligibility() {
   const { status } = useSession();
   const { address } = useAccount();
-  const { signMessageAsync } = useSignMessage();
 
   const { login } = useLogin();
 
@@ -19,8 +18,7 @@ export function CheckEligibility() {
       router.push("/claim");
       return;
     }
-    await login();
-    router.push("/claim");
+    await login("/claim");
   };
 
   if (!address) {
