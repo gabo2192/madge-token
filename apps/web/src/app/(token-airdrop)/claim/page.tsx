@@ -1,11 +1,11 @@
 import { XLogo } from "@/assets/twitter-logo";
+import { ClaimButton } from "@/components/client/claim-button";
 import { ConnectWallet } from "@/components/client/connect-wallet";
 import { MainLayout } from "@/components/layouts/main-layout";
 import { Hero } from "@/components/sections/hero";
-import { Button } from "@/components/ui/button";
 import { getUser } from "@/lib/user/get-user";
 import { checkUserSession } from "@/utils/check-session";
-import { generateProof } from "@/utils/generate-merkle-tree";
+import { generateProof, verifyProof } from "@/utils/generate-proof";
 import { redirect } from "next/navigation";
 
 export default async function Page() {
@@ -14,10 +14,18 @@ export default async function Page() {
     return redirect("/");
   }
   // check eligibility
+  let proof: `0x${string}`[];
+  let value: number;
   try {
-    const proof = generateProof(session.pubkey);
-    console.log({ proof });
-    if (!proof) {
+    const res = generateProof(session.pubkey);
+
+    if (!res) {
+      return redirect("/not-eligible");
+    }
+    proof = res.proof as `0x${string}`[];
+    value = res.values[1];
+    const verify = verifyProof(res.proof, res.values);
+    if (!verify) {
       return redirect("/not-eligible");
     }
   } catch {
@@ -53,9 +61,9 @@ export default async function Page() {
         You are eligible for the 1st wave of the
         <span className="text-brand">$MAD</span> airdrop!
       </p>
-      <div className="flex justify-center items-center mb-10 flex-col gap-4 w-max mx-auto">
+      <div className="flex justify-center items-center mb-10 flex-col gap-4 mx-auto">
         <ConnectWallet />
-        <Button disabled>Coming soon</Button>
+        <ClaimButton amount={BigInt(value)} proof={proof} />
       </div>
       <p className="text-base font-medium text-center mb-10 max-w-sm mx-auto">
         You need <span className="text-accentBrand">$RBTC</span> to claim your

@@ -4,17 +4,20 @@ pragma solidity ^0.8.20;
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
+import "hardhat/console.sol";
 
 contract MadgeClaimToken is Ownable {
     
 
     mapping(address => bool) public hasClaimed;
 
-    bytes32 merkleRoot = 0x51812f2c52617aeeab557a116de1a1cb8160d1b1c567d7fad5aaaca28a7d6fa7;
+    bytes32 merkleRoot;
     IERC20 public token;
     address public tokenOwner;
 
-    constructor() Ownable(msg.sender) {}
+    constructor() Ownable(msg.sender) {
+        merkleRoot = 0x27a2e2ff9235118463aaee293b6fdcee12cd53174efa4c9931135c33c5690779;
+    }
 
     function updateMerkleRoot(
         bytes32 _merkleRoot
@@ -33,23 +36,13 @@ contract MadgeClaimToken is Ownable {
 
 
     function claim(
-        string calldata receiver,
-        bytes32[] calldata proof
+        bytes32[] calldata proof,
+        uint256 amount
     ) external {
         require(!hasClaimed[msg.sender], "Tokens already claimed");
-        bytes32 leaf = keccak256(abi.encodePacked(receiver));
+        bytes32 leaf = keccak256(bytes.concat(keccak256(abi.encode(address(msg.sender), amount))));
         require(MerkleProof.verify(proof, merkleRoot, leaf), "Invalid proof");
-        require(token.transferFrom(tokenOwner, msg.sender, 1000000000), "Transaction Error");
+        require(token.transferFrom(tokenOwner, msg.sender, amount), "Transaction Error");
         hasClaimed[msg.sender] = true;
     }  
-    
-    function checkEligibility(
-        string calldata receiver, 
-        bytes32[] calldata proof
-    ) external view returns (bool) {
-        require(!hasClaimed[msg.sender], "Tokens already claimed");
-        bytes32 leaf = keccak256(abi.encodePacked(receiver));
-        require(MerkleProof.verify(proof, merkleRoot, leaf), "Invalid proof");
-        return true;
-    }
 }

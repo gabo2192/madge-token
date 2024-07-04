@@ -1,60 +1,50 @@
-import values from "@/data/accounts.json";
-import values2 from "@/data/accounts2.json";
+import accountsLocal from "@/data/account.local.json";
+import accountsTest from "@/data/account.test.json";
+import accounts1 from "@/data/accounts.json";
+import accounts2 from "@/data/accounts2.json";
 import { StandardMerkleTree } from "@openzeppelin/merkle-tree";
-import data from "../../tree.json";
-
-import { MerkleTree } from "./merkleTree";
-const vals = [...values, ...values2];
+import { getAddress } from "ethers";
+import * as fs from "fs";
 
 export const generateMerkleTreeRoot = () => {
-  const merkleTree = new MerkleTree(vals);
-  const root = merkleTree.getHexRoot();
-  return root;
-};
+  const environment = process.env.NEXT_PUBLIC_WALLET_ENVIRONMENT;
 
-export const generateMerkleTreeProof = (address: string) => {
-  // const merkleTree = new MerkleTree(vals);
-  // const proof = merkleTree.getHexProof(address);
+  const accounts: string[] = [];
 
-  const proof = vals.find((v) => v.toLowerCase() === address.toLowerCase());
-
-  return proof;
-};
-
-// export const generateMerkleTreeRoot2 = () => {
-//   const badAddresses = [];
-//   const data = vals
-//     .map((v) => {
-//       try {
-//         const address = getAddress(v.toLowerCase());
-//         return [address, "100"];
-//       } catch (error) {
-//         if ((error as any).code === "INVALID_ARGUMENT") {
-//           badAddresses.push(v);
-//           return null;
-//           // Handle the error appropriately (e.g., skip the address, log it, etc.)
-//         } else {
-//           console.log({ v });
-//           return null;
-//         }
-//       }
-//     })
-//     .filter((v) => v !== null);
-//   const tree = StandardMerkleTree.of(data, ["address", "uint"]);
-
-//   console.log("Merkle Root:", tree.root);
-//   fs.writeFileSync("tree.json", JSON.stringify(tree.dump()));
-// };
-
-export const generateProof = (address: string) => {
-  const tree = StandardMerkleTree.load(data as any);
-  for (const [i, v] of tree.entries()) {
-    if (v[0] === address) {
-      // (3)
-      const proof = tree.getProof(i);
-      console.log("Proof:", proof);
-      console.log("Value", v);
-      if (proof) return proof;
-    }
+  if (environment === "prod") {
+    accounts.push(...accounts1, ...accounts2);
+  } else if (environment === "preview") {
+    accounts.push(...accountsTest);
+  } else {
+    accounts.push(...accountsLocal);
   }
+
+  const value = (1000 * 10 ** 8).toString();
+
+  const badAddresses = [];
+  const data = accounts
+    .map((v) => {
+      try {
+        const address = getAddress(v.toLowerCase());
+        return [address, value];
+      } catch (error) {
+        if ((error as any).code === "INVALID_ARGUMENT") {
+          badAddresses.push(v);
+          return null;
+          // Handle the error appropriately (e.g., skip the address, log it, etc.)
+        } else {
+          console.log({ v });
+          return null;
+        }
+      }
+    })
+    .filter((v) => v !== null);
+  const tree = StandardMerkleTree.of(data, ["address", "uint256"], {
+    sortLeaves: true,
+  });
+
+  console.log("Merkle Root:", tree.root);
+  fs.writeFileSync("tree.json", JSON.stringify(tree.dump()));
 };
+
+generateMerkleTreeRoot();

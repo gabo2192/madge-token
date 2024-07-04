@@ -50,7 +50,6 @@ const UserProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     if (balanceOfStatus === "success") {
-      console.log({ data });
       const number = parseBigNumber(data);
       setBalance(number);
     }
