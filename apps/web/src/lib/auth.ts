@@ -24,7 +24,7 @@ export const authOptions = {
       async authorize(credentials, req) {
         try {
           const csrfToken = await getCsrfToken({ req: { ...req, body: null } });
-          console.log({ credentials });
+
           if (!csrfToken || !credentials?.message || !credentials?.signature)
             return null;
           const walletAddress = ethers.verifyMessage(
@@ -36,7 +36,6 @@ export const authOptions = {
             .from("users")
             .select("*")
             .eq("address", walletAddress);
-          console.log({ data, error });
           if (error) return null;
           if (!data || data.length === 0) {
             const { error } = await supabase

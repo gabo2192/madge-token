@@ -18,7 +18,10 @@ export function CheckEligibility() {
       router.push("/claim");
       return;
     }
-    await login("/claim");
+    await login({
+      redirect: "/claim",
+      address,
+    });
   };
 
   if (!address) {
