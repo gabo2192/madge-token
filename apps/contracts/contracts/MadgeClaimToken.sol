@@ -19,6 +19,9 @@ contract MadgeClaimToken is Ownable {
         merkleRoot = 0x3d0a127cfd993d64f38d4e2c7d9ed0cc2a2e2f59d7e09706ac5bb29a549037c7;
     }
 
+    error ClaimError(string reason);
+
+
     function updateMerkleRoot(
         bytes32 _merkleRoot
     ) external onlyOwner {
@@ -39,7 +42,9 @@ contract MadgeClaimToken is Ownable {
         bytes32[] calldata proof,
         uint256 amount
     ) external {
-        require(!hasClaimed[msg.sender], "Tokens already claimed");
+        if (hasClaimed[msg.sender]){
+            revert ClaimError("Tokens already claimed");
+        }
         bytes32 leaf = keccak256(bytes.concat(keccak256(abi.encode(address(msg.sender), amount))));
         require(MerkleProof.verify(proof, merkleRoot, leaf), "Invalid proof");
         require(token.transferFrom(tokenOwner, msg.sender, amount), "Transaction Error");

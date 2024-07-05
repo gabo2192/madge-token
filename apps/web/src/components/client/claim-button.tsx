@@ -60,9 +60,11 @@ export function ClaimButton({ amount, proof }: Props) {
       >
         {loading || isPending || isConfirming ? "Claiming..." : "Claim now!"}
       </Button>
-      {isError && (
+      {error?.name && error.name == "ContractFunctionExecutionError" && (
         <p className="text-red-500 max-w-64">
-          {(error?.cause as any)?.details || error.message}
+          {(error?.cause as any)?.data?.errorName === "ClaimError"
+            ? "Tokens already claimed"
+            : "Error claiming tokens"}
         </p>
       )}
       {transactionError && (
