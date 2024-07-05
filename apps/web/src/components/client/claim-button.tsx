@@ -2,6 +2,7 @@
 import { Button } from "@/components/ui/button";
 import config from "@/lib/contracts-config";
 import { MadgeClaimToken__factory } from "@/typechain-types";
+import axios from "axios";
 import { useEffect, useState } from "react";
 import { useWaitForTransactionReceipt, useWriteContract } from "wagmi";
 import { toast } from "../ui/use-toast";
@@ -13,6 +14,7 @@ interface Props {
 
 export function ClaimButton({ amount, proof }: Props) {
   const [loading, setLoading] = useState(false);
+  const [hasClaimed, setClaimed] = useState(false);
   const {
     data: hash,
     isPending,
@@ -45,11 +47,20 @@ export function ClaimButton({ amount, proof }: Props) {
   };
 
   useEffect(() => {
+    const handleUpdateUser = async () => {
+      try {
+        await axios.put("/api/user");
+      } catch (e) {
+        console.error(e);
+      }
+    };
     if (isConfirmed) {
       toast({
         title: "Success!",
         description: "You have claimed your tokens successfully!",
       });
+      setClaimed(true);
+      handleUpdateUser();
     }
   }, [isConfirmed]);
 
