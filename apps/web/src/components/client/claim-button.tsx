@@ -27,6 +27,7 @@ export function ClaimButton({ amount, proof }: Props) {
   } = useWaitForTransactionReceipt({
     hash,
   });
+  console.log({ error });
   const handleClaim = () => {
     setLoading(true);
     try {
