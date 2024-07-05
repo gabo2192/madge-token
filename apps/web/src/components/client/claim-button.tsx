@@ -67,10 +67,14 @@ export function ClaimButton({ amount, proof }: Props) {
   return (
     <>
       <Button
-        disabled={loading || isPending || isConfirming}
+        disabled={loading || isPending || isConfirming || hasClaimed}
         onClick={handleClaim}
       >
-        {loading || isPending || isConfirming ? "Claiming..." : "Claim now!"}
+        {loading || isPending || isConfirming
+          ? "Claiming..."
+          : hasClaimed
+            ? "Claimed"
+            : "Claim now!"}
       </Button>
       {error?.name && error.name == "ContractFunctionExecutionError" && (
         <p className="text-red-500 max-w-64">
