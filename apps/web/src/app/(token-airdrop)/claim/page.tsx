@@ -5,7 +5,7 @@ import { MainLayout } from "@/components/layouts/main-layout";
 import { Hero } from "@/components/sections/hero";
 import { getUser } from "@/lib/user/get-user";
 import { checkUserSession } from "@/utils/check-session";
-import { generateProof, verifyProof } from "@/utils/generate-proof";
+import { generateProof } from "@/utils/generate-proof";
 import { redirect } from "next/navigation";
 
 export default async function Page() {
@@ -24,10 +24,6 @@ export default async function Page() {
     }
     proof = res.proof as `0x${string}`[];
     value = res.values[1];
-    const verify = verifyProof(res.proof, res.values);
-    if (!verify) {
-      return redirect("/not-eligible");
-    }
   } catch {
     return redirect("/not-eligible");
   }
