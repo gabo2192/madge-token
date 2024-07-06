@@ -7,13 +7,16 @@ async function main() {
   // Deploy MadgeCoin
   const [owner] = await ethers.getSigners();
   const madgeAddress = process.env.NEXT_PUBLIC_TOKEN_CONTRACT!;
-  console.log({ madgeAddress });
+  const merkleRoot = process.env.MERKLE_ROOT!;
+  console.log({ merkleRoot });
 
-  const tokens = 4000000 * 10 ** 8;
+  const tokens = 3000000 * 10 ** 8;
   // Deploy MadgeAirdrop, passing in MadgeCoin address and other params
   const MadgeClaimTokenFactory =
     await ethers.getContractFactory("MadgeClaimToken");
-  const madgeClaimToken = await MadgeClaimTokenFactory.deploy();
+  const madgeClaimToken = await (MadgeClaimTokenFactory as any).deploy(
+    merkleRoot
+  );
   await madgeClaimToken.waitForDeployment(); // Approve transfer of tokens
   const madgeCoin = await ethers.getContractAt("MadgeCoin", madgeAddress);
   const madgeClaimTokenAddress = await madgeClaimToken.getAddress();

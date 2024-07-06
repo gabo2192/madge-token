@@ -3,8 +3,9 @@ import { ethers } from "hardhat";
 async function main() {
   // Deploy MadgeCoin
   const [owner] = await ethers.getSigners();
-  console.log(owner);
+
   const MadgeCoinFactory = await ethers.getContractFactory("MadgeCoin");
+  const merkleRoot = process.env.MERKLE_ROOT!;
   const madgeCoin = await MadgeCoinFactory.deploy();
   await madgeCoin.waitForDeployment();
 
@@ -13,7 +14,9 @@ async function main() {
   // Deploy MadgeAirdrop, passing in MadgeCoin address and other params
   const MadgeClaimTokenFactory =
     await ethers.getContractFactory("MadgeClaimToken");
-  const madgeClaimToken = await MadgeClaimTokenFactory.deploy();
+  const madgeClaimToken = await (MadgeClaimTokenFactory as any).deploy(
+    merkleRoot
+  );
   await madgeClaimToken.waitForDeployment();
 
   // Approve transfer of tokens

@@ -9,6 +9,7 @@
     "deploy:local": "hardhat run scripts/deploy-local.ts --network localhost",
     "deploy:rsktestnet": "hardhat run scripts/deploy.ts --network rskTestnet",
     "deploy-claim:rsktestnet": "hardhat run scripts/deploy-claim.ts --network rskTestnet",
+    "deploy-claim:rsk": "hardhat run scripts/deploy-claim.ts --network rsk",
     "deploy-casino:rsktestnet": "hardhat run scripts/deploy-casino.ts --network rskTestnet",
     "deploy:rsk": "hardhat run scripts/deploy.ts --network rsk"
   },

@@ -4,19 +4,19 @@ pragma solidity ^0.8.20;
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
-import "hardhat/console.sol";
 
 contract MadgeClaimToken is Ownable {
     
 
     mapping(address => bool) public hasClaimed;
+    uint16 public totalClaimed = 0;
 
     bytes32 merkleRoot;
     IERC20 public token;
     address public tokenOwner;
 
-    constructor() Ownable(msg.sender) {
-        merkleRoot = 0x3d0a127cfd993d64f38d4e2c7d9ed0cc2a2e2f59d7e09706ac5bb29a549037c7;
+    constructor(bytes32 _merkleRoot) Ownable(msg.sender) {
+        merkleRoot = _merkleRoot;
     }
 
     error ClaimError(string reason);
@@ -47,7 +47,12 @@ contract MadgeClaimToken is Ownable {
         }
         bytes32 leaf = keccak256(bytes.concat(keccak256(abi.encode(address(msg.sender), amount))));
         require(MerkleProof.verify(proof, merkleRoot, leaf), "Invalid proof");
-        require(token.transferFrom(tokenOwner, msg.sender, amount), "Transaction Error");
+        uint256 claimAmount = amount;
+        if (totalClaimed >= 1000){
+            claimAmount = 100*10**8;
+        }
+        require(token.transferFrom(tokenOwner, msg.sender, claimAmount), "Transaction Error");
         hasClaimed[msg.sender] = true;
+        totalClaimed += 1;
     }  
 }
