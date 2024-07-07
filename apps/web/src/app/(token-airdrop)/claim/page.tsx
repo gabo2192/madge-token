@@ -37,9 +37,9 @@ export default async function Page() {
 
   const user = data[0];
 
-  // if (user.claimed) {
-  //   return redirect("/already-claimed");
-  // }
+  if (user.claimed) {
+    return redirect("/already-claimed");
+  }
 
   if (error) {
     return redirect("/error");
@@ -57,6 +57,18 @@ export default async function Page() {
         <ConnectWallet />
         <ClaimButton amount={BigInt(value)} proof={proof} />
       </div>
+      <p className="text-base font-medium text-center mb-10 max-w-sm mx-auto">
+        You need <span className="text-accentBrand">$RBTC</span> to claim your
+        tokens. Get it{" "}
+        <a
+          href="https://app.symbiosis.finance/swap"
+          target="_blank"
+          className="underline"
+        >
+          here
+        </a>
+        .
+      </p>
     </>
   );
 }
