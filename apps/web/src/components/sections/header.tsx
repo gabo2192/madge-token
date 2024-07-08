@@ -12,14 +12,14 @@ const mainNavigation = [
     label: "Home",
     href: "/",
   },
-  {
-    label: "Documentation",
-    href: "/docs",
-  },
-  {
-    label: "Madge Casino",
-    href: "/casino",
-  },
+  // {
+  //   label: "Documentation",
+  //   href: "/docs",
+  // },
+  // {
+  //   label: "Madge Casino",
+  //   href: "/casino",
+  // },
 ];
 
 export function Header({ className }: Props) {

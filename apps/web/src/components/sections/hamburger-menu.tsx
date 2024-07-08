@@ -21,13 +21,13 @@ export function HamburgerMenu() {
 
         <ul className="px-8 list-disc mb-8 font-medium">
           <li className="py-2">
-            <Link href="/docs">Docs</Link>
+            <Link href="/">Home</Link>
           </li>
-          <li className="py-2">
+          {/* <li className="py-2">
             <Link href="/claim">Claim</Link>
-          </li>
+          </li> */}
         </ul>
-        <h3 className="text-xl font-bold px-4 mb-2">Madge Casino</h3>
+        {/* <h3 className="text-xl font-bold px-4 mb-2">Madge Casino</h3>
         <ul className="px-8 list-disc mb-4 font-medium">
           <li className="py-2">
             <Link href="/casino/coin-flipper">Coin Flipper</Link>
@@ -35,7 +35,7 @@ export function HamburgerMenu() {
           <li className="py-2">
             <Link href="/casino/lottery">Lottery</Link>
           </li>
-        </ul>
+        </ul> */}
         <DrawerFooter>
           <div className="text-base font-medium items-center flex flex-col gap-2">
             Contact
