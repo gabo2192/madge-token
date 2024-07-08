@@ -1,11 +1,12 @@
 "use client";
 import { Button } from "@/components/ui/button";
+import { Loading } from "@/components/ui/loading";
+import { toast } from "@/components/ui/use-toast";
 import config from "@/lib/contracts-config";
 import { MadgeClaimToken__factory } from "@/typechain-types";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useWaitForTransactionReceipt, useWriteContract } from "wagmi";
-import { toast } from "../ui/use-toast";
 
 interface Props {
   amount: bigint;
@@ -29,7 +30,7 @@ export function ClaimButton({ amount, proof }: Props) {
   } = useWaitForTransactionReceipt({
     hash,
   });
-  console.log({ error });
+
   const handleClaim = () => {
     setLoading(true);
     try {
@@ -88,6 +89,12 @@ export function ClaimButton({ amount, proof }: Props) {
           {(transactionError?.cause as any)?.details ||
             transactionError.message}
         </p>
+      )}
+      {(loading || isPending || isConfirming) && (
+        <div className="fixed inset-0 h-screen w-screen grid place-items-center">
+          <div className="absolute inset-0 h-screen w-screen bg-[radial-gradient(circle_at_bottom_left,_var(--tw-gradient-stops))] from-black/40  to-black"></div>
+          <Loading />
+        </div>
       )}
     </>
   );

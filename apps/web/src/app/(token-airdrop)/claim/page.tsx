@@ -37,9 +37,9 @@ export default async function Page() {
 
   const user = data[0];
 
-  if (user.claimed) {
-    return redirect("/already-claimed");
-  }
+  // if (user.claimed) {
+  //   return redirect("/already-claimed");
+  // }
 
   if (error) {
     return redirect("/error");
