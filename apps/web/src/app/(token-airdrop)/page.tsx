@@ -5,7 +5,7 @@ export default function Page() {
   return (
     <>
       <h2 className="font-koulen text-5xl text-center mb-4 max-w-lg mx-auto">
-        We're creating a mem ecosystem on{" "}
+        We're creating a meme ecosystem on{" "}
         <span className="text-accentBrand">Rootstock</span>
       </h2>
       <p className="text-base font-medium text-center mb-8 max-w-sm mx-auto">
