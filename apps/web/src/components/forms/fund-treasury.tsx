@@ -6,6 +6,7 @@ import { MadgeCasino__factory, MadgeCoin__factory } from "@/typechain-types";
 import { TreasuryDB } from "@/types/treasury";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
+import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useReadContract, useWriteContract } from "wagmi";
@@ -17,6 +18,7 @@ interface Props {
 }
 
 export function FundTreasuryForm({ treasury }: Props) {
+  const { data: session } = useSession();
   const [loading, setLoading] = useState(false);
 
   const formSchema = z.object({
@@ -30,8 +32,8 @@ export function FundTreasuryForm({ treasury }: Props) {
     },
   });
 
-  const { writeContractAsync } = useWriteContract();
-  const { data } = useReadContract({
+  const { writeContractAsync, error } = useWriteContract();
+  const { data: onChainTreasury } = useReadContract({
     abi: MadgeCasino__factory.abi,
     address: config.casinoContract,
     functionName: "treasuries",
@@ -39,6 +41,18 @@ export function FundTreasuryForm({ treasury }: Props) {
       treasury.owner_address as `0x${string}`,
       treasury.token_address as `0x${string}`,
     ],
+  });
+  const balance =
+    onChainTreasury && onChainTreasury.length >= 2
+      ? Number(onChainTreasury[2])
+      : 0;
+  console.log({ error });
+
+  const { data, isLoading } = useReadContract({
+    abi: MadgeCoin__factory.abi,
+    address: treasury.token_address as `0x${string}`,
+    functionName: "allowance",
+    args: [session?.user.pubkey as `0x${string}`, config.casinoContract],
   });
 
   async function onSubmit(data: z.infer<typeof formSchema>) {

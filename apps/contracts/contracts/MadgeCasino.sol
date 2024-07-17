@@ -20,7 +20,8 @@ contract MadgeCasino is Ownable {
     event TreasuryCreated(
         uint32 indexed requestId, 
         address indexed owner, 
-        address indexed token
+        address indexed token,
+        Treasury treasury
     );
 
     event CoinFlipResult(
@@ -42,12 +43,17 @@ contract MadgeCasino is Ownable {
             revert("Treasury for this token already exists");
         }
         console.log("here");
-        treasuries[msg.sender][address(_depositToken)] = Treasury(msg.sender, _depositToken, 0);
-        emit TreasuryCreated(requestId, msg.sender, address(_depositToken));
+        treasuries[msg.sender][address(_depositToken)] = Treasury(msg.sender, IERC20(_depositToken), 0);
+
+        emit TreasuryCreated(requestId, msg.sender, address(_depositToken), treasuries[msg.sender][address(_depositToken)]);
     }
 
     function fundTreasury(address _token, uint256 _amount) external {
-        Treasury storage treasury = treasuries[msg.sender][_token];
+        console.log(_token);
+        console.log(_amount);
+        Treasury storage treasury = treasuries[msg.sender][address(_token)];
+        console.log(treasury.owner);
+        console.log(treasury.balance);
         require(_amount > 0, "Funding amount must be greater than zero.");
         require(
             treasury.depositToken.transferFrom(msg.sender, address(this), _amount),

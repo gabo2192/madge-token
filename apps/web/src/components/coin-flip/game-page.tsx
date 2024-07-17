@@ -31,8 +31,8 @@ export function GamePage({ games, pubkey, privateGames }: Props) {
             -- No games available --
           </p>
         )}
-        {games.map((game) => (
-          <TreasuryItem treasury={game} pubkey={pubkey} />
+        {games.map((game, index) => (
+          <TreasuryItem treasury={game} pubkey={pubkey} key={index} />
         ))}
       </TabsContent>
       <TabsContent value="private" className="flex flex-col gap-4 items-center">
@@ -41,8 +41,8 @@ export function GamePage({ games, pubkey, privateGames }: Props) {
             -- No games available --
           </p>
         )}
-        {privateGames?.map((game) => (
-          <TreasuryItem treasury={game} pubkey={pubkey} />
+        {privateGames?.map((game, index) => (
+          <TreasuryItem treasury={game} pubkey={pubkey} key={index} />
         ))}
         <Dialog>
           <DialogTrigger asChild>

@@ -58,7 +58,7 @@ export function TreasuryItem({ treasury, pubkey }: Props) {
       abi: MadgeCasino__factory.abi,
       address: config.casinoContract,
       functionName: "createTreasury",
-      args: [treasury.id, pubkey as `0x${string}`],
+      args: [treasury.id, treasury.token_address as `0x${string}`],
     });
   };
 
