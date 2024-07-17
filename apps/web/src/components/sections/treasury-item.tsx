@@ -5,6 +5,7 @@ import config from "@/lib/contracts-config";
 import { MadgeCasino__factory } from "@/typechain-types/factories/contracts/MadgeCasino__factory";
 import { TreasuryDB } from "@/types/treasury";
 import axios from "axios";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import {
   useWaitForTransactionReceipt,
@@ -108,8 +109,8 @@ export function TreasuryItem({ treasury, pubkey }: Props) {
               {pubkey === treasury.owner_address && (
                 <FundTreasury treasury={treasury} />
               )}
-              <Button className="w-full" disabled={balance === 0}>
-                Play
+              <Button className="w-full" disabled={balance === 0} asChild>
+                <Link href={"/casino/coin-flipper/" + treasury.slug}>Play</Link>
               </Button>
             </div>
             <div className="flex gap-2">

@@ -13,4 +13,5 @@ export interface TreasuryDB {
   balance: string;
   image_url: string;
   status: string;
+  slug: string;
 }
