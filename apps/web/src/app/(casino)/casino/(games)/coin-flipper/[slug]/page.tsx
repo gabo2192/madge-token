@@ -32,7 +32,7 @@ export default async function Page({ params }: Props) {
         <BalanceButton treasury={game} />
       </div>
       <div className="mt-8">
-        <CoinFlip />
+        <CoinFlip treasury={game} />
       </div>
     </>
   );

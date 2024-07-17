@@ -129,12 +129,22 @@ export function BalanceButton({ treasury }: { treasury: TreasuryDB }) {
     ],
   });
 
+  const { data: _staticBalance, status } = useReadContract({
+    abi: MadgeCoin__factory.abi,
+    address: contracts.tokenContract,
+    functionName: "balanceOf",
+    args: [session?.user.pubkey! as `0x${string}`],
+  });
+
   const balance = _balance ? Number(_balance) / 10 ** 8 : 0;
+  const staticBalance = _staticBalance
+    ? Math.floor(Number(_staticBalance) / 10 ** 8)
+    : 0;
 
   const [open, setOpen] = useState(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");
 
-  if (balanceOfStatus === "pending") {
+  if (balanceOfStatus === "pending" || status === "pending") {
     return (
       <div className="w-full flex flex-col gap-4">
         <Skeleton className="w-full h-6" />
@@ -146,7 +156,12 @@ export function BalanceButton({ treasury }: { treasury: TreasuryDB }) {
   if (isDesktop) {
     return (
       <div className="flex flex-col gap-4">
-        <h2 className="">Your balance is {Number(balance)}</h2>
+        <h2 className="text-center">
+          Your spendable balance is {Number(balance)} {treasury.token_ticker}
+        </h2>
+        <h2 className="text-center">
+          Your balance is {Number(staticBalance)} {treasury.token_ticker}
+        </h2>
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
             <Button

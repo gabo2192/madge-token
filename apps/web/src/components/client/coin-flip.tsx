@@ -6,13 +6,25 @@ import { Form, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { useToast } from "@/components/ui/use-toast";
+import config from "@/lib/contracts-config";
 import { cn } from "@/lib/utils";
+import { MadgeCasino__factory } from "@/typechain-types";
+import { TreasuryDB } from "@/types/treasury";
 import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useSendTransaction, useWatchContractEvent } from "wagmi";
 import { z } from "zod";
 
-export function CoinFlip() {
+interface Props {
+  treasury: TreasuryDB;
+}
+
+export function CoinFlip({ treasury }: Props) {
+  const { data: session } = useSession();
   const [loading, setLoading] = useState(false);
   const [current, setCurrent] = useState(0);
   const { balance, setBalance } = useUserContext();
@@ -37,28 +49,67 @@ export function CoinFlip() {
     },
   });
 
-  async function onSubmit(data: z.infer<typeof formSchema>) {
+  const { sendTransactionAsync } = useSendTransaction();
+  const [requestId, setRequestId] = useState<number | null>(null);
+  const router = useRouter();
+
+  useWatchContractEvent({
+    address: config.casinoContract,
+    abi: MadgeCasino__factory.abi,
+    eventName: "CoinFlipResult",
+    onLogs(logs) {
+      console.log({ logs });
+      const userData = logs.find(
+        (log) => log.args.user === session?.user.pubkey
+      );
+      if (userData) {
+        const bet = Number(userData.args.betAmount) / 10 ** 8;
+        const payout = Number(userData.args.payout) / 10 ** 8;
+        const result = userData.args.result;
+        setCurrent(result || 0);
+        setRequestId(null);
+        setLoading(false);
+        if (userData.args.won) {
+          toast({
+            title: "You won!",
+            description: `You won ${payout} $MAD!`,
+          });
+          setBalance(balance + payout);
+        } else {
+          toast({
+            title: "You lost!",
+            description: `You lost ${bet} $MAD!`,
+            variant: "destructive",
+          });
+          setBalance(balance - bet);
+        }
+        router.refresh();
+      }
+    },
+    args: {
+      user: session?.user.pubkey as `0x${string}`,
+      requestId: requestId,
+    },
+    enabled: !!requestId,
+  });
+
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     setLoading(true);
     const result = Math.random() > 0.5 ? 1 : 0;
 
-    setTimeout(() => {
-      setLoading(false);
-      setCurrent(result);
-      if (result === data.option) {
-        setBalance(balance + data.value * 0.96);
-        toast({
-          title: "You won!",
-          description: `You won ${data.value + data.value * 0.96} $MAD!`,
-        });
-      } else {
-        setBalance(balance - data.value);
-        toast({
-          title: "You lost!",
-          description: `You lost ${data.value} $MAD!`,
-          variant: "destructive",
-        });
-      }
-    }, 3000);
+    const { data } = await axios.post("/api/coin-flipper/coin-flip", {
+      token: treasury.token_address,
+      tokenOwner: treasury.owner_address,
+      value: values.value,
+      option: values.option,
+    });
+
+    const tx = {
+      to: config.casinoContract,
+      data: data.rawTransaction,
+    };
+    setRequestId(data.requestId);
+    await sendTransactionAsync(tx);
   }
 
   return (
