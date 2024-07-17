@@ -16,10 +16,10 @@ const mainNavigation = [
   //   label: "Documentation",
   //   href: "/docs",
   // },
-  // {
-  //   label: "Madge Casino",
-  //   href: "/casino",
-  // },
+  {
+    label: "Madge Casino",
+    href: "/casino",
+  },
 ];
 
 export function Header({ className }: Props) {

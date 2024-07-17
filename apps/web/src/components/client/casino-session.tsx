@@ -15,8 +15,7 @@ export function CasinoSession() {
   const router = useRouter();
 
   async function handleLogin() {
-    await login();
-    router.push("/casino/coin-flipper");
+    await login({ address, redirect: "/casino/coin-flipper" });
   }
 
   if (!address) {

@@ -62,8 +62,6 @@ export function AddTreasury() {
   const { data, writeContract, error, isPending, failureReason } =
     useWriteContract();
 
-  console.log({ data, error, isPending, failureReason });
-
   async function updateTreasuryStatus(requestId: number) {
     try {
       await axios.put("/api/coin-flipper/treasury", {
@@ -101,11 +99,10 @@ export function AddTreasury() {
 
   return (
     <>
-      <h2 className="text-center">Add your game token here</h2>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="flex flex-col pb-10 gap-4  mt-4 p-4 border border-slate-700 w-96 mx-auto"
+          className="flex flex-col pb-10 gap-4  mt-4 p-4 w-96 mx-auto"
         >
           <FormField
             control={form.control}

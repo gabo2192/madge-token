@@ -16,13 +16,7 @@ interface Props {
 export function ClaimButton({ amount, proof }: Props) {
   const [loading, setLoading] = useState(false);
   const [hasClaimed, setClaimed] = useState(false);
-  const {
-    data: hash,
-    isPending,
-    writeContract,
-    isError,
-    error,
-  } = useWriteContract();
+  const { data: hash, isPending, writeContract, error } = useWriteContract();
   const {
     isLoading: isConfirming,
     isSuccess: isConfirmed,

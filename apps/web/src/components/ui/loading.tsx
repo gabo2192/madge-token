@@ -1,6 +1,6 @@
 export function Loading() {
   return (
-    <div className="bg-black rounded-full overflow-clip">
+    <div className="bg-black rounded-full overflow-clip aspect-square">
       <div className="loading-cat">
         <div className="cat-body"></div>
         <div className="cat-animation-mask"></div>
